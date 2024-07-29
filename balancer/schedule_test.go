@@ -71,40 +71,40 @@ func ValidateMigtationIn(ops []*MigrationOp, storeIDs []int64) []int64 {
 func TestBalance(t *testing.T) {
 	{
 		stores := []*StoreRegionSet{
-			MakeStoreRegionSet(1, []int64{1, 2, 3}),
-			MakeStoreRegionSet(2, []int64{4, 5}),
-			MakeStoreRegionSet(3, []int64{6}),
+			MakeStoreRegionSet(11, []int64{1, 2, 3}),
+			MakeStoreRegionSet(12, []int64{4, 5}),
+			MakeStoreRegionSet(13, []int64{6}),
 		}
 		senders, receivers, ops := MigrationPlan(stores)
 		require.Equal(t, senders, []int{0})
 		require.Equal(t, receivers, []int{2})
-		require.Equal(t, len(ValidateMigtationOut(ops, []int64{1})), 1)
+		require.Equal(t, len(ValidateMigtationOut(ops, []int64{11})), 1)
 	}
 	{
 		stores := []*StoreRegionSet{
-			MakeStoreRegionSet(1, []int64{1, 2, 3, 4, 5}),
-			MakeStoreRegionSet(2, []int64{6}),
-			MakeStoreRegionSet(3, []int64{7}),
-			MakeStoreRegionSet(4, []int64{8}),
-			MakeStoreRegionSet(5, []int64{9}),
+			MakeStoreRegionSet(11, []int64{1, 2, 3, 4, 5}),
+			MakeStoreRegionSet(12, []int64{6}),
+			MakeStoreRegionSet(13, []int64{7}),
+			MakeStoreRegionSet(14, []int64{8}),
+			MakeStoreRegionSet(15, []int64{9}),
 		}
 		senders, receivers, ops := MigrationPlan(stores)
 		require.Equal(t, senders, []int{0})
 		require.Equal(t, receivers, []int{1, 2, 3})
-		require.Equal(t, len(ValidateMigtationOut(ops, []int64{1})), 3)
-		require.Equal(t, ValidateMigtationOut(ops, []int64{1}), ValidateMigtationIn(ops, []int64{2, 3, 4, 5}))
+		require.Equal(t, len(ValidateMigtationOut(ops, []int64{11})), 3)
+		require.Equal(t, ValidateMigtationOut(ops, []int64{11}), ValidateMigtationIn(ops, []int64{12, 13, 14, 15}))
 	}
 	{
 		stores := []*StoreRegionSet{
-			MakeStoreRegionSet(1, []int64{1, 2, 3, 4, 5}),
-			MakeStoreRegionSet(2, []int64{6, 7, 8, 9, 10}),
-			MakeStoreRegionSet(3, []int64{11}),
+			MakeStoreRegionSet(11, []int64{1, 2, 3, 4, 5}),
+			MakeStoreRegionSet(12, []int64{6, 7, 8, 9, 10}),
+			MakeStoreRegionSet(13, []int64{11}),
 		}
 		senders, receivers, ops := MigrationPlan(stores)
 		require.Equal(t, senders, []int{0, 1})
 		require.Equal(t, receivers, []int{2})
-		require.Equal(t, len(ValidateMigtationOut(ops, []int64{1})), 1)
-		require.Equal(t, len(ValidateMigtationOut(ops, []int64{2})), 1)
-		require.Equal(t, ValidateMigtationOut(ops, []int64{1, 2}), ValidateMigtationIn(ops, []int64{3}))
+		require.Equal(t, len(ValidateMigtationOut(ops, []int64{11})), 1)
+		require.Equal(t, len(ValidateMigtationOut(ops, []int64{12})), 1)
+		require.Equal(t, ValidateMigtationOut(ops, []int64{11, 12}), ValidateMigtationIn(ops, []int64{13}))
 	}
 }
