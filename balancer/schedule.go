@@ -131,10 +131,8 @@ func PickRegions(n int, fromStore *StoreRegionSet, toStore *StoreRegionSet) *Mig
 			break
 		}
 		if removed {
-			fmt.Printf("Region %v is removed from %v\n", r, fromStore.ID)
 			continue
 		}
-		fmt.Printf("Pick %v from %v to %v\n", r, fromStore.ID, toStore.ID)
 		if _, exist := toStore.RegionIDSet[r]; !exist {
 			o.Regions[r] = nil
 			fromStore.RegionIDSet[r] = true
@@ -201,7 +199,6 @@ func MigrationPlan(stores []*StoreRegionSet) ([]int, []int, []*MigrationOp) {
 					}
 					receiversVolume[j] -= n
 					sendersVolume[i] -= n
-					fmt.Printf("from %v to %v c %v\n", fromStore.ID, toStore.ID, n)
 					ops = append(ops, PickRegions(n, fromStore, toStore))
 				}
 			}
